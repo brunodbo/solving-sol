@@ -1,0 +1,60 @@
+<html>
+<head>
+  <title>Solving Sol #16 / PaperJS</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+  </style>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.9/paper.js"></script>
+  <script type="text/paperscript" canvas="sol-canvas">
+
+    var bandLines,
+        start,
+        offCenter,
+        degrees;
+
+    function isEven(n) {
+     return (n % 2 == 0);
+    }
+
+    function isOdd(n) {
+     return (n % 2 == 1);
+    }
+
+    function createBandOfLines() {
+      bandLines = new Group();
+      for (var i = 0; i < 12; i++) {
+        // Calculate the x coordinate for the lines.
+        if (i == 0) {
+          offCenter = view.center._x;
+        } else {
+          if (isEven(i)) {
+            offCenter = view.center._x + (i*10);
+          } else if (isOdd(i)) {
+            offCenter = view.center._x - (i*10) - 10; // Correction (by -10) for the uneven counters.
+          }
+        }
+
+        var from = new Point(offCenter, 0);
+        var to = new Point(offCenter, view.size.height);
+        var bandLine = new Path.Line(from, to);
+        bandLines.addChild(bandLine);
+      }
+      return bandLines;
+    }
+
+    for (var bandId = 0; bandId < 3; bandId++) {
+      var band = createBandOfLines();
+      band.strokeColor = '#012345';
+      band.rotate(bandId * 45);
+    }
+
+  </script>
+</head>
+<body>
+
+  <canvas id="sol-canvas" resize></canvas>
+
+</body>
+</html>
